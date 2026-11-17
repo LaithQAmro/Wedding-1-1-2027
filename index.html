@@ -3,7 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>دعوة زفاف المهندسين ليث & كريمته | قصر تريو 3</title>
+  <title>دعوة زفاف ليث | 1 يناير 2027</title>
+  <meta name="description" content="نتشرف بدعوتكم لمشاركتنا فرحة الزفاف يوم الجمعة 1 يناير 2027 في قصر تريو 3.">
+  <meta name="theme-color" content="#460f1b">
+  <link rel="icon" type="image/png" sizes="512x512" href="./favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <!-- Social link preview: publish social-preview.jpg next to this HTML file. -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_JO">
+  <meta property="og:site_name" content="دعوة زفاف ليث">
+  <meta property="og:title" content="دعوة زفاف">
+  <meta property="og:description" content="اضغط لفتح الدعوة.">
+  <meta property="og:url" content="https://laithqamro.github.io/Wedding-1-1-2027/">
+  <meta property="og:image" content="https://laithqamro.github.io/Wedding-1-1-2027/social-preview.jpg">
+  <meta property="og:image:secure_url" content="https://laithqamro.github.io/Wedding-1-1-2027/social-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="دعوة زفاف">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="دعوة زفاف">
+  <meta name="twitter:description" content="اضغط لفتح الدعوة.">
+  <meta name="twitter:image" content="https://laithqamro.github.io/Wedding-1-1-2027/social-preview.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Marhey:wght@400;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
@@ -1289,10 +1310,18 @@
   <!-- Clean Opening & Interactive Copy Handler -->
   <script>
     const stage = document.getElementById('stage');
+    const AUTO_OPEN_DELAY_MS = 5000;
+    let autoOpenTimer = setTimeout(() => {
+      openInvitation();
+    }, AUTO_OPEN_DELAY_MS);
 
     let isOpening = false;
 
     function openInvitation() {
+  if (autoOpenTimer) {
+    clearTimeout(autoOpenTimer);
+    autoOpenTimer = null;
+  }
   if (isOpening || stage.classList.contains('opened')) return;
   isOpening = true;
 
