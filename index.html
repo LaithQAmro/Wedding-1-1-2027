@@ -768,8 +768,9 @@
       display: none;
       object-fit: contain;
       filter: drop-shadow(0 2px 4px rgba(70, 15, 27, 0.4)); /* Exact match with seal-monogram-img */
-      will-change: transform, filter, opacity;
-      transform-origin: center center;
+      will-change: transform, opacity;
+      transform-origin: top left;
+      backface-visibility: hidden;
     }
     .hero-flight-monogram.hovering {
       filter: drop-shadow(0 4px 10px rgba(133, 34, 57, 0.5)) brightness(1.04);
@@ -1311,21 +1312,23 @@
   const startRect = outerMonogram.getBoundingClientRect();
   const targetRect = innerMonogram.getBoundingClientRect();
 
-  const deltaX = (targetRect.left + targetRect.width / 2) - (startRect.left + startRect.width / 2);
-  const deltaY = (targetRect.top + targetRect.height / 2) - (startRect.top + startRect.height / 2);
-  const scale = targetRect.height / startRect.height; // exact, no clamping
+  // FLIP: match both endpoints exactly, but animate only the GPU-composited transform.
+  const startX = startRect.left - targetRect.left;
+  const startY = startRect.top - targetRect.top;
+  const startScaleX = startRect.width / targetRect.width;
+  const startScaleY = startRect.height / targetRect.height;
 
   // Place the flying copy exactly over the seal monogram
   heroFlight.src = outerMonogram.src;
   Object.assign(heroFlight.style, {
-    top: startRect.top + 'px',
-    left: startRect.left + 'px',
-    width: startRect.width + 'px',
-    height: startRect.height + 'px',
+    top: targetRect.top + 'px',
+    left: targetRect.left + 'px',
+    width: targetRect.width + 'px',
+    height: targetRect.height + 'px',
     display: 'block',
     opacity: '1',
     transition: 'none',
-    transform: 'translate(0px, 0px) scale(1)'
+    transform: `translate3d(${startX}px, ${startY}px, 0) scale3d(${startScaleX}, ${startScaleY}, 1)`
   });
   void heroFlight.offsetWidth; // commit the start state so the transition below actually runs
 
@@ -1340,8 +1343,8 @@
   // Open the doors and start the flight in the same moment
   stage.classList.add('opened');
   heroFlight.style.transition =
-    `transform ${FLIGHT_MS}ms cubic-bezier(0.45, 0.05, 0.2, 1), filter ${FLIGHT_MS}ms ease`;
-  heroFlight.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scale})`;
+    `transform ${FLIGHT_MS}ms cubic-bezier(0.45, 0.05, 0.2, 1)`;
+  heroFlight.style.transform = 'translate3d(0px, 0px, 0) scale3d(1, 1, 1)';
   heroFlight.classList.add('flying');
 
   // Dock: reveal the inner brooch and fade out the flying copy
